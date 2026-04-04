@@ -8,17 +8,23 @@
 </head>
 
 <body>
-    <header>
-        <a href="index.php">Quest Explorer</a>
+    <header class="site-header">
+        <a class="brand" href="index.php">Quest Explorer</a>
         <nav>
             <ul>
                 <li><a href="login.php">Login</a></li>
                 <li><a href="register.php">Register</a></li>
-
             </ul>
         </nav>
-
     </header>
+
+    <main class="site-main">
+        <h1>Welcome, Explorer!</h1>
+        <button class="login-button"><a href="login.php">Login</a></button>
+        <button class="register-button"><a href="register.php">Register</a></button>
+
+    </main>
+
 </body>
 
 </html>
