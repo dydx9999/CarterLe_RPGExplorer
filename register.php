@@ -27,6 +27,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Password must be 8+ chars with upper, lower, number, and symbol.';
         }
     }
+    if (empty($errors)) {
+        $newUserID = bin2hex(random_bytes(8));
+        session_regenerate_id(true);
+        $_SESSION['user_id'] = $newUserID;
+        $_SESSION['username'] = $username;
+        header('Location: game.php');
+        exit;
+    }
+
+
 }
 
 ?>
