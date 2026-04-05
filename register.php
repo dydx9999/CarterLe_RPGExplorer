@@ -1,3 +1,35 @@
+<?php
+session_start();
+$errors = [];
+$username = '';
+$password = '';
+$validUsername = false;
+$validPassword = false;
+
+$usernamePattern = '/^[A-Za-z0-9_]{3,20}$/';
+$passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,64}$/';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if ($username === '' || $password === '') {
+        $errors[] = 'Username and password are required.';
+    } else {
+        $validUsername = preg_match($usernamePattern, $username) === 1;
+        $validPassword = preg_match($passwordPattern, $password) === 1;
+
+        if (!$validUsername) {
+            $errors[] = 'Username must be 3-20 characters and use only letters, numbers, or underscore.';
+        }
+
+        if (!$validPassword) {
+            $errors[] = 'Password must be 8+ chars with upper, lower, number, and symbol.';
+        }
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,6 +60,13 @@
                 size="34" required><br>
             <input type="submit" value="Sign up">
         </form>
+        <?php if (!empty($errors)): ?>
+            <div class=" form-errors">
+                <?php foreach ($errors as $error): ?>
+                    <p><?= htmlspecialchars($error) ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
     </main>
 </body>
