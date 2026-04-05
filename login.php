@@ -34,9 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1>User Login</h1>
         <form action="login.php" method="post">
             <label for="username">Username:</label>
-            <input type="text" name="username" id="username"><br>
-            <label for=" password">Password:</label>
-            <input type="password" name="password" id="password"><br>
+            <input type="text" name="username" id="username" placeholder="3-20 chars: letters, numbers, _" size="28"
+                required><br>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" placeholder="8+ chars: upper, lower, number, symbol"
+                size="34" required><br>
             <input type="submit" value="Log in">
             <p>Don't have an account?</p><a href="register.php">Sign up</a>
         </form>
