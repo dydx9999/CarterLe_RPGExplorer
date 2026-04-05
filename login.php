@@ -1,15 +1,28 @@
+<?php
+session_start();
+$errors = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if ($username === '' || $password === '') {
+        $errors[] = 'Username and password are required.';
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RPGExplorer - Login</title>
+    <title>RPG Explorer - Login</title>
 </head>
 
 <body>
     <header class="site-header">
-        <a class="brand" href="index.php">Quest Explorer</a>
+        <a class="brand" href="index.php">RPG Explorer</a>
         <nav>
             <ul>
                 <li><a href="login.php">Login</a></li>
@@ -24,8 +37,17 @@
             <input type="text" name="username" id="username"><br>
             <label for=" password">Password:</label>
             <input type="password" name="password" id="password"><br>
-            <input type="submit" value="Log In">
+            <input type="submit" value="Log in">
+            <p>Don't have an account?</p><a href="register.php">Sign up</a>
         </form>
+        <?php if (!empty($errors)): ?>
+            <div class=" form-errors">
+                <?php foreach ($errors as $error): ?>
+                    <p><?= htmlspecialchars($error) ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </main>
 </body>
 
 </html>
