@@ -4,8 +4,10 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
-$player = $_SESSION['player'] ?? null;
 
+$hero = $_SESSION['hero'] ?? null;
+
+// Hero class creation templates
 $classTemplates = [
     'warrior' => [
         'stats' => ['hp' => 140, 'atk' => 18, 'def' => 14, 'mana' => 20],
@@ -16,7 +18,7 @@ $classTemplates = [
         'items' => ['Wooden Staff', 'Basic Spellbook']
 
     ],
-    'assassin' => [
+    'rogue' => [
         'stats' => ['hp' => 100, 'atk' => 16, 'def' => 9, 'mana' => 40],
         'items' => ['Daggers', 'Stealth Cloak']
     ]
@@ -26,10 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $class = $_POST['class'] ?? '';
 
     if (isset($classTemplates[$class])) {
-        $_SESSION['player'] = [
+        $_SESSION['hero'] = [
             'class' => $class,
             'stats' => $classTemplates[$class]['stats'],
             'items' => $classTemplates[$class]['items'],
+            'score' => $score,
         ];
     }
 }
@@ -42,6 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RPG Explorer - Story Mode</title>
+    <link rel="stylesheet" href="styles.css">
+
 </head>
 
 <body>
@@ -60,10 +65,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <form action="game.php" method="post">
                     <fieldset>
                         <legend>Choose your class:</legend>
-                        <label for="class"><input type="radio" name="class" id="class" value="warrior"
+                        <label for="class-warrior"><input type="radio" name="class" id="class-warrior" value="warrior"
                                 checked>Warrior</label>
-                        <label for="class"><input type="radio" name="class" id="class" value="mage">Mage</label>
-                        <label for="class"><input type="radio" name="class" id="class" value="assassin">Assassin</label>
+                        <label for="class-mage"><input type="radio" name="class" id="class-mage"
+                                value="mage">Mage</label>
+                        <label for="class-assassin"><input type="radio" name="class" id="class-assassin"
+                                value="assassin">Assassin</label>
                     </fieldset>
                     <button type="submit">Submit</button>
                 </form>
