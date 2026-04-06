@@ -2,6 +2,7 @@
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
+    exit;
 }
 ;
 ?>
@@ -12,6 +13,8 @@ if (!isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RPG Explorer - Conclusion</title>
+    <link rel="stylesheet" href="styles.css">
+
 </head>
 
 <body>
