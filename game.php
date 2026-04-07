@@ -5,8 +5,6 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$hero = $_SESSION['hero'] ?? null;
-
 // Hero class creation templates
 $classTemplates = [
     'warrior' => [
@@ -25,16 +23,7 @@ $classTemplates = [
 
 ];
 
-// Story Nodes 
-$storyNodes = [
-    'start' => [
-        'text' => 'Introduction: You awaken to the fiery ruins of your village. In the distance, a loud roar can be heard.',
-        'choices' => [
-            'Investigate the ruins' => ['next' => 'ruins'],
-            'Head towards the mountains' => ['next' => 'mountains'],
-        ],
-    ]
-];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $class = $_POST['class'] ?? '';
 
@@ -49,6 +38,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+// Story Nodes 
+$storyNodes = [
+    'start' => [
+        'text' => 'Introduction: You awaken to the fiery ruins of your village. In the distance, a loud roar can be heard.',
+        'choices' => [
+            'Investigate the ruins' => ['next' => 'ruins'],
+            'Head towards the mountains' => ['next' => 'mountains'],
+        ],
+    ]
+];
+
+$hero = $_SESSION['hero'] ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -89,18 +90,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <button type="submit">Submit</button>
                 </form>
             </section>
+            <!-- Player HUD -->
+            <section class="player-hud">
+                <h3><?= htmlspecialchars($_SESSION['username']) ?> (<?= ucfirst(htmlspecialchars($hero['class'])) ?>)
+                </h3>
+                <div class="stats-row">
+                    <?php if (!empty($hero) && !empty($hero['stats']) && is_array($hero['stats'])): ?>
+                        <span><strong>HP:</strong>
+                            <?= htmlspecialchars($hero['stats']['hp']) ?>
+                        </span>
+                        <span><strong>Attack:</strong>
+                            <?= htmlspecialchars($hero['stats']['atk']) ?>
+                        </span>
+                        <span><strong>Defense:</strong>
+                            <?= htmlspecialchars($hero['stats']['def']) ?>
+                        </span>
+                        <span><strong>Score:</strong>
+                            <?= htmlspecialchars($hero['score']) ?>
+                        </span>
+                    <?php else: ?>
+                        <p>No stats found. Please select a class first.</p>
+                    <?php endif ?>
+                </div>
+            </section>
 
             <!-- Hero Inventory -->
             <section class="hero-inventory">
                 <h2>Inventory</h2>
-                <?php if (!empty($hero['items']) && !empty($hero)):
-                    ?>
+                <?php if (!empty($hero['items']) && !empty($hero) && is_array($hero['items'])): ?>
                     <ul>
                         <?php foreach ($hero['items'] as $item): ?>
-                            <li><?= htmlspecialchars($item) ?></li>
-                        <?php endforeach ?>
+                            <li><?= htmlspecialchars($item); ?></li>
+                        <?php endforeach; ?>
                     </ul>
-                <?php endif ?>
+                <?php else: ?>
+                    <p>No items yet. Pick a class first.</p>
+                <?php endif; ?>
             </section>
 
             <!-- User Story Choice Form -->
