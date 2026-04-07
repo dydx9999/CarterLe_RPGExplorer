@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $class = $_POST['class'] ?? '';
 
     if (isset($classTemplates[$class])) {
+        $score = $_SESSION['score'] ?? 0;
         $_SESSION['hero'] = [
             'class' => $class,
             'stats' => $classTemplates[$class]['stats'],
@@ -55,10 +56,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </header>
     <div>
         <main class="site-main">
+            <!-- User Welcome -->
             <section class="user-welcome">
                 <h1>Welcome, <?= htmlspecialchars($_SESSION['username']) ?>!
                 </h1>
             </section>
+
             <!-- Class Selection Form -->
             <section class="class-selection">
                 <h2>Character class selection for: <?= htmlspecialchars($_SESSION['username']) ?></h2>
@@ -69,13 +72,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 checked>Warrior</label>
                         <label for="class-mage"><input type="radio" name="class" id="class-mage"
                                 value="mage">Mage</label>
-                        <label for="class-assassin"><input type="radio" name="class" id="class-assassin"
-                                value="assassin">Assassin</label>
+                        <label for="class-rogue"><input type="radio" name="class" id="class-rogue"
+                                value="rogue">Rogue</label>
                     </fieldset>
                     <button type="submit">Submit</button>
                 </form>
             </section>
 
+            <!-- Hero Inventory -->
+            <section class="hero-inventory">
+                <h2>Inventory</h2>
+                <?php if (!empty($hero['items']) && !empty($hero)):
+                    ?>
+                    <ul>
+                        <?php foreach ($hero['items'] as $item): ?>
+                            <li><?= htmlspecialchars($item) ?></li>
+                        <?php endforeach ?>
+                    </ul>
+                <?php endif ?>
+            </section>
+
+            <!-- User Story Choice Form -->
         </main>
     </div>
 </body>
