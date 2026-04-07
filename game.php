@@ -24,6 +24,17 @@ $classTemplates = [
     ]
 
 ];
+
+// Story Nodes 
+$storyNodes = [
+    'start' => [
+        'text' => 'Introduction: You awaken to the fiery ruins of your village. In the distance, a loud roar can be heard.',
+        'choices' => [
+            'Investigate the ruins' => ['next' => 'ruins'],
+            'Head towards the mountains' => ['next' => 'mountains'],
+        ],
+    ]
+];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $class = $_POST['class'] ?? '';
 
