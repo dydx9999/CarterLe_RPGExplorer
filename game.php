@@ -24,6 +24,17 @@ $classTemplates = [
 ];
 
 
+$currentNodeId = $_SESSION['node'] ?? 'start';
+// Story Nodes 
+$storyNodes = [
+    'start' => [
+        'text' => 'Introduction: You awaken to the fiery ruins of your village. In the distance, a loud roar can be heard.',
+        'choices' => [
+            'Investigate the ruins' => ['next' => 'ruins'],
+            'Head towards the mountains' => ['next' => 'mountains'],
+        ],
+    ]
+];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $class = $_POST['class'] ?? '';
 
@@ -37,19 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
     }
 }
-
-// Story Nodes 
-$storyNodes = [
-    'start' => [
-        'text' => 'Introduction: You awaken to the fiery ruins of your village. In the distance, a loud roar can be heard.',
-        'choices' => [
-            'Investigate the ruins' => ['next' => 'ruins'],
-            'Head towards the mountains' => ['next' => 'mountains'],
-        ],
-    ]
-];
-
 $hero = $_SESSION['hero'] ?? null;
+$currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['start'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -116,7 +116,7 @@ $hero = $_SESSION['hero'] ?? null;
 
             <!-- Hero Inventory -->
             <section class="hero-inventory">
-                <h2>Inventory</h2>
+                <h3>Inventory</h3>
                 <?php if (!empty($hero['items']) && !empty($hero) && is_array($hero['items'])): ?>
                     <ul>
                         <?php foreach ($hero['items'] as $item): ?>
@@ -129,6 +129,20 @@ $hero = $_SESSION['hero'] ?? null;
             </section>
 
             <!-- User Story Choice Form -->
+            <section class="player-choice-input">
+                <h3><?= htmlspecialchars($currentNode['text']) ?></h3>
+                <form method="post">
+                    <?php if (!empty($currentNode['choices'])): ?>
+                        <?php foreach ($currentNode['choices'] as $choiceLabel => $choiceData): ?>
+                            <button class="choice-buttons" type="submit" name="choice_label"
+                                value="<?= htmlspecialchars($choiceLabel) ?>">
+                                <?= htmlspecialchars($choiceLabel) ?>
+                            </button>
+
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </form>
+            </section>
         </main>
     </div>
 </body>
