@@ -76,6 +76,11 @@ $currentNodeId = $_SESSION['node'] ?? 'start';
 <body>
     <header class="site-header">
         <a class="brand" href="index.php">RPG Explorer</a>
+        <nav class="site-nav">
+            <ul>
+                <li><a href="logout.php">Logout</a></li>
+            </ul>
+        </nav>
     </header>
     <div>
         <main class="site-main">
