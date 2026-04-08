@@ -12,12 +12,7 @@
 <body>
     <header class="site-header">
         <a class="brand" href="index.php">RPG Explorer</a>
-        <nav>
-            <ul>
-                <li><a href="login.php">Login</a></li>
-                <li><a href="register.php">Register</a></li>
-            </ul>
-        </nav>
+
     </header>
 
     <main class="site-main">
