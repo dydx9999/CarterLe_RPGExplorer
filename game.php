@@ -38,6 +38,7 @@ $storyNodes = [
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $class = $_POST['class'] ?? '';
 
+
     if (isset($classTemplates[$class])) {
         $score = $_SESSION['score'] ?? 0;
         $_SESSION['hero'] = [
@@ -46,10 +47,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'items' => $classTemplates[$class]['items'],
             'score' => $score,
         ];
+    } elseif (isset($_POST['choice_label'])) {
+        $choiceLabel = $_POST['choice_label'];
+        $currentNode = $storyNodes[$currentNodeId] ?? null;
+        if ($currentNode && isset($currentNode['choices'][$choiceLabel]['next'])) {
+            $_SESSION['node'] = $currentNode['choices'][$choiceLabel]['next'];
+        }
     }
 }
+
 $hero = $_SESSION['hero'] ?? null;
+$hasSelectedClass = !empty($hero['class']) && isset($classTemplates[$hero['class']]);
 $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['start'];
+$currentNodeId = $_SESSION['node'] ?? 'start';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -75,24 +86,31 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['start'];
             </section>
 
             <!-- Class Selection Form -->
-            <section class="class-selection">
-                <h2>Character class selection for: <?= htmlspecialchars($_SESSION['username']) ?></h2>
-                <form action="game.php" method="post">
-                    <fieldset>
-                        <legend>Choose your class:</legend>
-                        <label for="class-warrior"><input type="radio" name="class" id="class-warrior" value="warrior"
-                                checked>Warrior</label>
-                        <label for="class-mage"><input type="radio" name="class" id="class-mage"
-                                value="mage">Mage</label>
-                        <label for="class-rogue"><input type="radio" name="class" id="class-rogue"
-                                value="rogue">Rogue</label>
-                    </fieldset>
-                    <button type="submit">Submit</button>
-                </form>
-            </section>
+            <?php if (!$hasSelectedClass): ?>
+                <section class="class-selection">
+                    <h2>Character class selection for: <?= htmlspecialchars($_SESSION['username']) ?></h2>
+                    <form action="game.php" method="post">
+                        <fieldset>
+                            <legend>Choose your class:</legend>
+                            <label for="class-warrior"><input type="radio" name="class" id="class-warrior" value="warrior"
+                                    checked>Warrior</label>
+                            <label for="class-mage"><input type="radio" name="class" id="class-mage"
+                                    value="mage">Mage</label>
+                            <label for="class-rogue"><input type="radio" name="class" id="class-rogue"
+                                    value="rogue">Rogue</label>
+                        </fieldset>
+                        <button type="submit">Submit</button>
+                    </form>
+                </section>
+            <?php endif; ?>
             <!-- Player HUD -->
             <section class="player-hud">
                 <h3><?= htmlspecialchars($_SESSION['username']) ?> (<?= ucfirst(htmlspecialchars($hero['class'])) ?>)
+                <h3>
+                    <?= htmlspecialchars($_SESSION['username']) ?>
+                    <?php if ($hasSelectedClass): ?>
+                        (<?= ucfirst(htmlspecialchars($hero['class'])) ?>)
+                    <?php endif; ?>
                 </h3>
                 <div class="stats-row">
                     <?php if (!empty($hero) && !empty($hero['stats']) && is_array($hero['stats'])): ?>
@@ -130,7 +148,9 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['start'];
 
             <!-- User Story Choice Form -->
             <section class="player-choice-input">
-                <h3><?= htmlspecialchars($currentNode['text']) ?></h3>
+                <h3>
+                    <?= htmlspecialchars($currentNode['text']) ?>
+                </h3>
                 <form method="post">
                     <?php if (!empty($currentNode['choices'])): ?>
                         <?php foreach ($currentNode['choices'] as $choiceLabel => $choiceData): ?>
@@ -138,7 +158,6 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['start'];
                                 value="<?= htmlspecialchars($choiceLabel) ?>">
                                 <?= htmlspecialchars($choiceLabel) ?>
                             </button>
-
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </form>
