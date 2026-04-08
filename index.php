@@ -22,8 +22,10 @@
 
     <main class="site-main">
         <h1>Welcome, Explorer!</h1>
-        <button class="login-button"><a href="login.php">Login</a></button>
-        <button class="register-button"><a href="register.php">Register</a></button>
+        <div class="welcome-buttons">
+            <button class="login-button"><a href="login.php">Login</a></button>
+            <button class="register-button"><a href="register.php">Register</a></button>
+        </div>
 
     </main>
 
