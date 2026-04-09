@@ -177,7 +177,14 @@ $storyNodes = [
         'choices' => [],
     ],
 ];
+// Array of story end nodes 
+$endingNodes = [
+    'Heroic Victory',
+    'Tragic Ending (Deception)',
+    'Secret Path',
+    'Tragic Ending (Corruption)',
 ];
+// Form Handling 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $class = $_POST['class'] ?? '';
 
@@ -195,9 +202,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $currentNode = $storyNodes[$currentNodeId] ?? null;
         if ($currentNode && isset($currentNode['choices'][$choiceLabel]['next'])) {
             $_SESSION['node'] = $currentNode['choices'][$choiceLabel]['next'];
+            if ($_SESSION['node'] === 'Hidden Gratitude') {
+                array_push($_SESSION['hero']['items'], "Glowing Sigil");
+            } elseif (in_array($_SESSION['node'], $endingNodes, true)) {
+                $_SESSION['ending_node'] = $_SESSION['node'];
+                header('Location: conclusion.php');
+                exit;
+            }
+
         }
     }
+
 }
+
+
 
 $hero = $_SESSION['hero'] ?? null;
 $hasSelectedClass = !empty($hero['class']) && isset($classTemplates[$hero['class']]);
