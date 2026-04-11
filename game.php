@@ -4,6 +4,7 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
+$currentNodeId = $_SESSION['node'] ?? 'awakening';
 
 // Hero class creation templates
 $classTemplates = [
@@ -202,6 +203,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $currentNode = $storyNodes[$currentNodeId] ?? null;
         if ($currentNode && isset($currentNode['choices'][$choiceLabel]['next'])) {
             $_SESSION['node'] = $currentNode['choices'][$choiceLabel]['next'];
+            $_SESSION['hero']['score'] = $currentNode['choices'][$choiceLabel]['score-delta']
+                + $_SESSION['hero']['score'];
+
             if ($_SESSION['node'] === 'Hidden Gratitude') {
                 array_push($_SESSION['hero']['items'], "Glowing Sigil");
             } elseif (in_array($_SESSION['node'], $endingNodes, true)) {
