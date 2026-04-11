@@ -1,9 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
+requireLogin();
 session_unset();
 session_destroy();
 if (ini_get('session.use_cookies')) {
