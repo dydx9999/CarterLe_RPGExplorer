@@ -223,8 +223,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $hero = $_SESSION['hero'] ?? null;
 $hasSelectedClass = !empty($hero['class']) && isset($classTemplates[$hero['class']]);
-$currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['start'];
-$currentNodeId = $_SESSION['node'] ?? 'start';
+$currentNodeId = $_SESSION['node'] ?? 'awakening';
+$currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
 
 ?>
 <!DOCTYPE html>
