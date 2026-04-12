@@ -21,8 +21,12 @@ $classTemplates = [
     ]
 
 ];
-
-
+// Hero class navcard descriptions 
+$classDescriptions = [
+    'warrior' => 'Frontline tank with high durability and steady melee damage.',
+    'mage' => 'Arcane specialist with strong spells and a deep mana pool.',
+    'rogue' => 'Fast skirmisher focused on precision, agility, and stealth.'
+];
 
 // Story Nodes 
 $storyNodes = [
@@ -172,6 +176,7 @@ $storyNodes = [
     ],
     // Node 20 - Tragic Ending (Corruption) (Ending)
     'Tragic Ending (Corruption)' => [
+        'text' => 'The heart corrupts you, and you become the next tyrant.',
         'choices' => [],
     ],
 ];
