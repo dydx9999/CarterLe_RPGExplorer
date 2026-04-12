@@ -157,3 +157,11 @@ nav ul {
     font-weight: 500;
     transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
 }
+.new-run-button {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    margin-top: var(--space-4);
+    justify-content: center;
+    text-align: center;
+}

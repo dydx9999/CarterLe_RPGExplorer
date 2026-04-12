@@ -33,5 +33,14 @@ $score = $_SESSION['hero']['score'] ?? 0;
 
 
 </body>
+<!-- Start new game run button -->
+<?php if (!empty($endingNode) && !empty($endingNodeText)): ?>
+    <div class="new-run-button">
+        <form action="game.php" method="post">
+            <button class="choice-buttons" type="submit" name="reset" value="reset">Start a new run</button>
+        </form>
+    </div>
+<?php endif; ?>
+
 
 <?php renderBottom(); ?>
