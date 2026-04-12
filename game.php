@@ -157,22 +157,21 @@ $storyNodes = [
     ],
     // Node 17 - Heroic Victory (Ending)
     'Heroic Victory' => [
-        'text' => 'Heroic Victory: You defeat the Dragon King and restore hope to the realm.',
+        'text' => 'You defeat the Dragon King and restore hope to the realm.',
         'choices' => [],
     ],
     // Node 18 - Tragic Ending (Deception) (Ending)
     'Tragic Ending (Deception)' => [
-        'text' => 'Tragic Ending: The Dragon King deceives you, and your fate is sealed in flame.',
+        'text' => 'The Dragon King deceives you, and your fate is sealed in flame.',
         'choices' => [],
     ],
     // Node 19 - Secret Path (Ending) Final Score = +500 to +799
     'Secret Path' => [
-        'text' => 'Secret Path: With the heart destroyed, a hidden road opens to a new age.',
+        'text' => 'With the heart destroyed, a hidden road opens to a new age.',
         'choices' => [],
     ],
     // Node 20 - Tragic Ending (Corruption) (Ending)
     'Tragic Ending (Corruption)' => [
-        'text' => 'Tragic Ending: The heart corrupts you, and you become the next tyrant.',
         'choices' => [],
     ],
 ];
