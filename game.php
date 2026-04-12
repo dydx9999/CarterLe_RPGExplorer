@@ -210,7 +210,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($_SESSION['node'] === 'Hidden Gratitude') {
                 array_push($_SESSION['hero']['items'], "Glowing Sigil");
-            } elseif (in_array($_SESSION['node'], $endingNodes, true)) {
+            } elseif (
+                $currentNodeId === 'Precision'
+                && $choiceLabel === 'Equip armor'
+                && !in_array("Rusty Armor", $_SESSION['hero']['items'], true)
+            ) {
+                array_push($_SESSION['hero']['items'], "Rusty Armor");
+                $_SESSION['hero']['stats']['def'] += 10;
+            } elseif (
+                in_array($currentNodeId, ['Precision', 'Abandoned Armory'], true) &&
+                in_array($choiceLabel, ['Leave it', 'Grab loot and run'], true)
+            ) {
+                $_SESSION['hero']['stats']['hp'] -= 20;
+            }
+
+
+            if (in_array($_SESSION['node'], $endingNodes, true)) {
                 $_SESSION['ending_node'] = $_SESSION['node'];
                 $_SESSION['ending_node_text'] = $storyNodes[$_SESSION['node']]['text'] ?? '';
                 if (!isset($_SESSION['run_history']) || !is_array($_SESSION['run_history'])) {
