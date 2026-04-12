@@ -1,7 +1,7 @@
 <?php
 require_once 'common.php';
 session_start();
-
+// Redirect user to game.php if already signed in
 if (isset($_SESSION['user_id'])) {
     header('Location: game.php');
     exit;
@@ -10,7 +10,7 @@ if (isset($_SESSION['user_id'])) {
 $errors = [];
 $username = '';
 $password = '';
-
+// Regex Input Checks 
 $usernamePattern = '/^[A-Za-z0-9_]{3,20}$/';
 $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,64}$/';
 
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <header class="site-header">
         <a class="brand" href="index.php">RPG Explorer</a>
-        <nav>
+        <nav class="site-nav">
             <ul>
                 <li><a href="login.php">Login</a></li>
                 <li><a href="register.php">Register</a></li>
@@ -69,25 +69,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </nav>
     </header>
     <main class="site-main">
-        <h1>User Login</h1>
-        <form action="login.php" method="post">
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" placeholder="3-20 chars: letters, numbers, _" size="28"
-                value="<?= htmlspecialchars($username) ?>" required><br>
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" placeholder="8+ chars: upper, lower, number, symbol"
-                size="34" required><br>
-            <input type="submit" value="Log in">
-            <p>Don't have an account?</p><a href="register.php">Sign up</a>
-        </form>
-        <?php if (!empty($errors)): ?>
-            <div class="form-errors">
-                <?php foreach ($errors as $error): ?>
-                    <p><?= htmlspecialchars($error) ?></p>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-    </main>
-</body>
+        <section class="auth-page" aria-labelledby="login-title">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1 id="login-title">Enter the Realm</h1>
+                    <p>Use your adventurer credentials to continue your story.</p>
+                </div>
 
-</html>
+                <?php if (!empty($errors)): ?>
+                    <div class="form-errors" role="alert" aria-live="polite">
+                        <?php foreach ($errors as $error): ?>
+                            <p><?= htmlspecialchars($error) ?></p>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+
+                <form class="auth-form" action="login.php" method="post">
+                    <div class="auth-field">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" id="username" placeholder="3-20 chars: letters, numbers, _"
+                            value="<?= htmlspecialchars($username) ?>" required>
+                    </div>
+                    <div class="auth-field">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password"
+                            placeholder="8+ chars: upper, lower, number, symbol" required>
+                    </div>
+                    <button class="auth-submit" type="submit">Log in</button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Don&apos;t have an account?</p>
+                    <a href="register.php">Sign up</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <?php renderBottom(); ?>
