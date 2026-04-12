@@ -1,4 +1,5 @@
 <?php
+require_once 'common.php';
 requireLogin();
 session_unset();
 session_destroy();
