@@ -191,8 +191,15 @@ $endingNodes = [
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $class = $_POST['class'] ?? '';
 
-
-    if (isset($classTemplates[$class])) {
+    if (isset($_POST['reset'])) {
+        $_SESSION['node'] = 'awakening';
+        $_SESSION['score'] = 0;
+        unset($_SESSION['ending_node']);
+        unset($_SESSION['ending_node_text']);
+        unset($_SESSION['hero']);
+        header('Location: game.php');
+        exit;
+    } elseif (isset($classTemplates[$class])) {
         $score = $_SESSION['score'] ?? 0;
         $_SESSION['hero'] = [
             'class' => $class,
