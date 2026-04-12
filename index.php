@@ -1,3 +1,6 @@
+<?php
+require_once 'common.php'
+    ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,15 +21,15 @@
 
     </header>
 
-    <main class="site-main">
+    <main id="index-main">
         <h1>Welcome, Explorer!</h1>
+
         <div class="welcome-buttons">
-            <button class="login-button"><a href="login.php">Login</a></button>
-            <button class="register-button"><a href="register.php">Register</a></button>
+            <a class="choice-buttons" href="login.php">Login</a>
+            <a class="choice-buttons" href="register.php">Sign Up</a>
         </div>
+
 
     </main>
 
-</body>
-
-</html>
+    <?php renderBottom(); ?>
