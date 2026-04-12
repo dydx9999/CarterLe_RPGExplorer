@@ -207,6 +207,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 array_push($_SESSION['hero']['items'], "Glowing Sigil");
             } elseif (in_array($_SESSION['node'], $endingNodes, true)) {
                 $_SESSION['ending_node'] = $_SESSION['node'];
+                $_SESSION['ending_node_text'] = $storyNodes[$_SESSION['node']]['text'] ?? '';
+                if (!isset($_SESSION['run_history']) || !is_array($_SESSION['run_history'])) {
+                    $_SESSION['run_history'] = [];
+                }
+
+                $_SESSION['run_history'][] = [
+                    'username' => $_SESSION['username'] ?? 'Explorer',
+                    'score' => (int) ($_SESSION['hero']['score'] ?? 0),
+                    'ending' => $_SESSION['ending_node'],
+                ];
+
                 header('Location: conclusion.php');
                 exit;
             }
@@ -216,14 +227,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 }
 
-
-
 $hero = $_SESSION['hero'] ?? null;
 $hasSelectedClass = !empty($hero['class']) && isset($classTemplates[$hero['class']]);
 $currentNodeId = $_SESSION['node'] ?? 'awakening';
 $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
 
 ?>
+
 <?php rendertop('RPG Explorer - Story Mode'); ?>
 
             <!-- Class Selection Form -->
