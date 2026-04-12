@@ -18,3 +18,31 @@
     --radius: 16px;
     --max: 1100px;
 }
+
+
+button {
+    transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+
+.welcome-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    margin-top: var(--space-4);
+    justify-content: center;
+    text-align: center;
+
+}
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: 0.7rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(122, 162, 255, 0.50);
+    background: rgba(122, 162, 255, 0.30);
+    color: var(--text);
+    font-weight: 500;
+    transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
