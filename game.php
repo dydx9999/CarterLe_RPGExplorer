@@ -253,6 +253,9 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
                         <button type="submit">Submit</button>
                     </form>
                 </section>
+            </div>
+            <?php if (isset($currentNode)): ?> <img class="story-banner"
+                    src="assets/<?= htmlspecialchars($currentNodeId) ?>.jpg">
             <?php endif; ?>
             <!-- Player HUD -->
             <section class="player-hud">
