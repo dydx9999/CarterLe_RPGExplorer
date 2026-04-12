@@ -1,12 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    outline: 1.5px solid rgba(255, 0, 0, 0.2);
-}
-
+/* Base */
 :root {
     --space-1: 0.25rem;
     --space-2: 0.5rem;
@@ -17,11 +11,128 @@
     --space-7: 3rem;
     --radius: 16px;
     --max: 1100px;
+    --bg-0: #0b120e;
+    --bg-1: #122019;
+    --surface-1: #1b2c22;
+    --surface-2: #274032;
+    --text: #fff6e6;
+    --text-muted: #efe2c9;
+    --text-subtle: #d8c9ad;
+    --accent: #e1c07a;
+    --accent-strong: #f5d89a;
+    --accent-hover: #c79e4f;
+    --accent-deep: #54380f;
+    --accent-shadow: #ad8740;
+    --on-accent: #1b1307;
+    --danger-border: #cf6b6b;
+    --danger-bg: #5f1a1a;
+    --accent-rgb: 225 192 122;
+    --danger-rgb: 95 26 26;
+    --shadow-rgb: 0 0 0;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    outline: none;
+}
+
 }
 
 
 button {
     transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+
+/* Type */
+h1,
+h2,
+h3,
+.brand {
+    font-family: "Cinzel", serif;
+    color: var(--text);
+    text-align: center;
+}
+
+h1 {
+    font-weight: 1000;
+}
+
+.site-main h1,
+.player-leaderboard h3,
+.hero-inventory h3 {
+    text-align: center;
+    text-shadow:
+        1px 1px 2px rgb(var(--shadow-rgb) / 0.85),
+        0 0 1em var(--accent-shadow),
+        0 0 0.2em var(--accent);
+}
+
+/* Navigation */
+.site-header nav {
+    display: inline-flex;
+}
+
+.site-header {
+    background: rgba(var(--shadow-rgb), 0.24);
+    border-bottom: 1px solid rgba(var(--accent-rgb), 0.45);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+    color: var(--text);
+}
+
+.site-nav a,
+.site-nav a:visited,
+.site-nav a:hover,
+.site-nav a:active {
+    color: var(--text);
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+    color: var(--accent-strong);
+}
+
+/* Shared buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: 0.7rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(var(--accent-rgb), 0.75);
+    background: linear-gradient(180deg, var(--surface-2), var(--surface-1));
+    color: var(--text);
+    font-weight: 500;
+}
+
+.choice-buttons {
+    display: inline-block;
+    padding: var(--space-4);
+    font-family: "Montserrat", sans-serif;
+    background-color: var(--surface-1);
+    color: var(--text);
+    border: 1px solid var(--accent);
+}
+
+.choice-buttons:hover,
+.choice-buttons:focus-visible {
+    transform: translateY(-1px);
+    background: var(--accent);
+    border-color: var(--accent-deep);
+    color: var(--on-accent);
+}
+
+/* Landing */
+#index-main {
+    margin: var(--space-7);
+    padding: var(--space-6);
 }
 
 .welcome-buttons {
