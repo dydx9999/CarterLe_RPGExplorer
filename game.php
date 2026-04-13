@@ -263,22 +263,95 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
 
 <?php rendertop('RPG Explorer - Story Mode'); ?>
 
-            <!-- Class Selection Form -->
-            <?php if (!$hasSelectedClass): ?>
-                <section class="class-selection">
-                    <h2>Character class selection for: <?= htmlspecialchars($_SESSION['username']) ?></h2>
-                    <form action="game.php" method="post">
-                        <fieldset>
-                            <legend>Choose your class:</legend>
-                            <label for="class-warrior"><input type="radio" name="class" id="class-warrior" value="warrior"
-                                    checked>Warrior</label>
-                            <label for="class-mage"><input type="radio" name="class" id="class-mage"
-                                    value="mage">Mage</label>
-                            <label for="class-rogue"><input type="radio" name="class" id="class-rogue"
-                                    value="rogue">Rogue</label>
-                        </fieldset>
-                        <button type="submit">Submit</button>
-                    </form>
+<main id="main" class="site-main">
+    <?php if (!$hasSelectedClass): ?>
+        <!-- User Welcome -->
+        <section class="user-welcome">
+            <h1>Welcome, <?= htmlspecialchars($_SESSION['username']) ?>!
+            </h1>
+        </section>
+
+        <!-- Class Selection Form -->
+        <section class="class-selection">
+            <h2>Character class selection for: <?= htmlspecialchars($_SESSION['username']) ?></h2>
+
+            <form action="game.php" method="post">
+                <fieldset class="class-cards">
+                    <legend>Choose your class:</legend>
+                    <?php foreach ($classTemplates as $className => $template): ?>
+                        <label class="class-card" for="class-<?= htmlspecialchars($className) ?>">
+                            <input type="radio" name="class" id="class-<?= htmlspecialchars($className) ?>"
+                                value="<?= htmlspecialchars($className) ?>" <?= $className === 'warrior' ? 'checked' : '' ?>>
+                            <span class="class-card-body">
+                                <span class="class-card-title"><?= ucfirst(htmlspecialchars($className)) ?></span>
+                                <span class="class-card-description">
+                                    <?= htmlspecialchars($classDescriptions[$className] ?? '') ?>
+                                </span>
+                                <span class="class-card-metrics">
+                                    <span>&#x2764;&#xfe0f; <?= (int) ($template['stats']['hp'] ?? 0) ?></span>
+                                    <span>&#9876; <?= (int) ($template['stats']['atk'] ?? 0) ?></span>
+                                    <span>&#128737; <?= (int) ($template['stats']['def'] ?? 0) ?></span>
+                                    <span>&#128167; <?= (int) ($template['stats']['mana'] ?? 0) ?></span>
+                                </span>
+                            </span>
+                        </label>
+                    <?php endforeach; ?>
+                </fieldset>
+                <div class="class-submit">
+                    <button type="submit">Confirm selection</button>
+                </div>
+            </form>
+        </section>
+    <?php endif; ?>
+
+    <?php if (isset($hero['class'])): ?>
+        <div class="story-header">
+            <h1> <?php if (isset($_SESSION['node'])): ?>
+                    <?= htmlspecialchars($_SESSION['node']) ?>
+                <?php endif ?>
+            </h1>
+        </div>
+        <section class="game-overview">
+            <div class="overview-main">
+
+                <!-- Player HUD -->
+                <section class="player-hud">
+                    <!-- Player Stats Row -->
+                    <div class="stats-row">
+
+                        <?php if (!empty($hero) && !empty($hero['stats']) && is_array($hero['stats'])): ?>
+                            <span><strong>
+                                    <?= htmlspecialchars($_SESSION['username']) ?>
+                                    <?php if ($hasSelectedClass): ?>
+                                        (<?= ucfirst(htmlspecialchars($hero['class'])) ?>)
+                                    <?php endif; ?></strong></span>
+                            <span><strong>&#x2764;&#xfe0f; HP:
+                                    <?= htmlspecialchars($hero['stats']['hp']) ?>
+                            </span></strong>
+                            <span><strong>&#9876; Attack:
+                                    <?= htmlspecialchars($hero['stats']['atk']) ?>
+                            </span></strong>
+                            <span><strong>&#128737; Defense:
+                                    <?= htmlspecialchars($hero['stats']['def']) ?>
+                            </span></strong>
+                            <span><strong>Score:
+                                    <?= htmlspecialchars($hero['score']) ?>
+                            </span></strong>
+                        <?php else: ?>
+                            <p>No stats found. Please select a class first.</p>
+                        <?php endif ?>
+                    </div>
+                    <div class="class-avatar">
+                        <?php if (isset($hero['class']) && $hero['class'] === 'warrior'): ?>
+                            <img src="assets/warrior-avatar.png" alt="Warrior avatar">
+                        <?php endif; ?>
+                        <?php if (isset($hero['class']) && $hero['class'] === 'mage'): ?>
+                            <img src="assets/mage-avatar.png" alt="Mage avatar">
+                        <?php endif; ?>
+                        <?php if (isset($hero['class']) && $hero['class'] === 'rogue'): ?>
+                            <img src="assets/rogue-avatar.png" alt="Rogue avatar">
+                        <?php endif; ?>
+                    </div>
                 </section>
             </div>
             <?php if (isset($currentNode)): ?> <img class="story-banner"
