@@ -357,67 +357,52 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
             <?php if (isset($currentNode)): ?> <img class="story-banner"
                     src="assets/<?= htmlspecialchars($currentNodeId) ?>.jpg">
             <?php endif; ?>
-            <!-- Player HUD -->
-            <section class="player-hud">
-                <h3><?= htmlspecialchars($_SESSION['username']) ?> (<?= ucfirst(htmlspecialchars($hero['class'])) ?>)
-                <h3>
-                    <?= htmlspecialchars($_SESSION['username']) ?>
-                    <?php if ($hasSelectedClass): ?>
-                        (<?= ucfirst(htmlspecialchars($hero['class'])) ?>)
-                    <?php endif; ?>
-                </h3>
-                <div class="stats-row">
-                    <?php if (!empty($hero) && !empty($hero['stats']) && is_array($hero['stats'])): ?>
-                        <span><strong>HP:</strong>
-                            <?= htmlspecialchars($hero['stats']['hp']) ?>
-                        </span>
-                        <span><strong>Attack:</strong>
-                            <?= htmlspecialchars($hero['stats']['atk']) ?>
-                        </span>
-                        <span><strong>Defense:</strong>
-                            <?= htmlspecialchars($hero['stats']['def']) ?>
-                        </span>
-                        <span><strong>Score:</strong>
-                            <?= htmlspecialchars($hero['score']) ?>
-                        </span>
-                    <?php else: ?>
-                        <p>No stats found. Please select a class first.</p>
-                    <?php endif ?>
-                </div>
-            </section>
 
             <!-- Hero Inventory -->
-            <section class="hero-inventory">
-                <h3>Inventory</h3>
-                <?php if (!empty($hero['items']) && !empty($hero) && is_array($hero['items'])): ?>
-                    <ul>
-                        <?php foreach ($hero['items'] as $item): ?>
-                            <li><?= htmlspecialchars($item); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php else: ?>
-                    <p>No items yet. Pick a class first.</p>
-                <?php endif; ?>
-            </section>
 
-            <!-- User Story Choice Form -->
-            <section class="player-choice-input">
-                <h3>
-                    <?= htmlspecialchars($currentNode['text']) ?>
-                </h3>
-                <form method="post">
-                    <?php if (!empty($currentNode['choices'])): ?>
-                        <?php foreach ($currentNode['choices'] as $choiceLabel => $choiceData): ?>
-                            <button class="choice-buttons" type="submit" name="choice_label"
-                                value="<?= htmlspecialchars($choiceLabel) ?>">
-                                <?= htmlspecialchars($choiceLabel) ?>
-                            </button>
-                        <?php endforeach; ?>
+                <aside class="overview-inventory hero-inventory">
+                    <h3>Inventory</h3>
+                    <?php if (!empty($hero['items']) && !empty($hero) && is_array($hero['items'])): ?>
+                        <ul class="inventory-items">
+                            <?php foreach ($hero['items'] as $item): ?>
+                                <li><?= htmlspecialchars($item); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else: ?>
+                        <p>No items yet. Pick a class first.</p>
                     <?php endif; ?>
                 </form>
+                </aside>
+                <!-- Leaderboard Sidebar View -->
+                <aside class="player-leaderboard">
+                    <h3>Leaderboard</h3>
+                    <ul class="leaderboard-items">
+                        <li>
+                            <span><?= htmlspecialchars($_SESSION['username']) ?></span>
+                            <strong><?= htmlspecialchars((string) ($hero['score'] ?? 0)) ?></strong>
+                        </li>
+                    </ul>
+                </aside>
+            </div>
+            <!-- Leaderboard Sidebar View -->
+            <?php if (isset($hero['class'])): ?>
+                <!-- User Story Choice Form -->
+                <section class="player-choice-input">
+                    <h3>
+                        <?= htmlspecialchars($currentNode['text']) ?>
+                    </h3>
+                    <form method="post">
+                        <?php if (!empty($currentNode['choices'])): ?>
+                            <?php foreach ($currentNode['choices'] as $choiceLabel => $choiceData): ?>
+                                <button class="choice-buttons" type="submit" name="choice_label"
+                                    value="<?= htmlspecialchars($choiceLabel) ?>">
+                                    <?= htmlspecialchars($choiceLabel) ?>
+                                </button>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+
+                    </form>
+                <?php endif ?>
             </section>
-        </main>
-    </div>
-</body>
 
 </html>
