@@ -68,7 +68,7 @@ $storyNodes = [
         'text' => 'You find an old armory. Rusted weapons line the walls. A trap clicks beneath your feet.',
         'choices' => [
             'Disarm the trap' => ['next' => 'Precision', 'score-delta' => 200],
-            'Grab loot and run' => ['next' => 'Recklessness', 'score-delta' => -200],
+            'Grab loot and run' => ['next' => 'Recklessness', 'score-delta' => -100],
         ],
     ],
     // Node 6 - The Watcher
@@ -91,7 +91,7 @@ $storyNodes = [
     'Sigil Secret' => [
         'text' => 'The sigil hums. It responds to your presence-power and danger intertwined.',
         'choices' => [
-            'Channel the sigil' => ['next' => 'Awakening Power', 'score-delta' => 100],
+            'Channel the sigil' => ['next' => 'Awakening Power', 'score-delta' => 200],
             'Ignore its power' => ['next' => 'Mountain Gate', 'score-delta' => 100],
         ],
     ],
@@ -99,7 +99,7 @@ $storyNodes = [
     'Mountain Gate' => [
         'text' => 'Massive stone gates block the path. Beast guardians stir as you approach.',
         'choices' => [
-            'Fight through' => ['next' => 'Battlefield', 'score-delta' => 200],
+            'Fight through' => ['next' => 'Battlefield', 'score-delta' => 300],
             'Sneak past' => ['next' => 'Shadow Path', 'score-delta' => 100],
         ],
     ],
@@ -108,7 +108,7 @@ $storyNodes = [
         'text' => 'You carefully dismantle the trap and recover intact armor.',
         'choices' => [
             'Equip armor' => ['next' => 'Mountain Gate', 'score-delta' => 100],
-            'Leave it' => ['next' => 'Recklessness', 'score-delta' => 100],
+            'Leave it' => ['next' => 'Recklessness', 'score-delta' => 0],
         ],
     ],
     // Node 11 - Recklessness
@@ -123,7 +123,7 @@ $storyNodes = [
     'Secret Guide' => [
         'text' => 'The stranger reveals a concealed tunnel beneath the mountain.',
         'choices' => [
-            'Enter the tunnel' => ['next' => 'Hidden Chamber', 'score-delta' => 200],
+            'Enter the tunnel' => ['next' => 'Hidden Chamber', 'score-delta' => 400],
             'Refuse and take main path' => ['next' => 'Battlefield', 'score-delta' => 100],
         ],
     ],
