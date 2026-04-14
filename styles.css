@@ -25,7 +25,7 @@
     --accent-shadow: #ad8740;
     --on-accent: #1b1307;
     --danger-border: #cf6b6b;
-    --danger-bg: #5f1a1a;
+    --danger-bg: #0b0808;
     --accent-rgb: 225 192 122;
     --danger-rgb: 95 26 26;
     --shadow-rgb: 0 0 0;
@@ -40,10 +40,19 @@
 
 }
 
-
-button {
-    transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+html {
+    background-color: var(--bg-0);
 }
+
+body {
+    font-family: "Montserrat", sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at top left, rgba(var(--accent-rgb), 0.1), transparent 34%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-0));
+}
+
+
 
 /* Type */
 h1,
@@ -313,6 +322,20 @@ nav ul {
 
 .form-errors p+p {
     margin-top: var(--space-2);
+}
+
+/* Page frame */
+#main,
+.conclusion-main {
+    width: min(var(--max), 95%);
+    margin: 0 auto;
+    padding: var(--space-5) 0 var(--space-6);
+}
+
+.site-footer {
+    margin-top: var(--space-6);
+    color: var(--text-subtle);
+    text-align: center;
 }
 
 /* Class selection */
