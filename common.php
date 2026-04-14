@@ -45,10 +45,11 @@ function renderTop(string $title): void
 function renderBottom(): void
 {
     ?>
-        <div class="site-footer">
+        <footer class="site-footer">
             <p>
                 ©2026 RPG Explorer.
             </p>
+        </footer>
         </div>
     </body>
 
@@ -56,4 +57,4 @@ function renderBottom(): void
     <?php
 }
 
-    ?>
+?>
