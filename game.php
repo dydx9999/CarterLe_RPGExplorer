@@ -304,6 +304,7 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
         </section>
     <?php endif; ?>
 
+    <!-- Display current story node title as header -->
     <?php if (isset($hero['class'])): ?>
         <div class="story-header">
             <h1> <?php if (isset($_SESSION['node'])): ?>
@@ -312,8 +313,8 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
             </h1>
         </div>
         <section class="game-overview">
+            <!-- Main game overview -->
             <div class="overview-main">
-
                 <!-- Player HUD -->
                 <section class="player-hud">
                     <!-- Player Stats Row -->
@@ -341,6 +342,7 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
                             <p>No stats found. Please select a class first.</p>
                         <?php endif ?>
                     </div>
+                    <!-- Class-specific HUD avatar rendering -->
                     <div class="class-avatar">
                         <?php if (isset($hero['class']) && $hero['class'] === 'warrior'): ?>
                             <img src="assets/warrior-avatar.png" alt="Warrior avatar">
@@ -354,6 +356,7 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
                     </div>
                 </section>
             </div>
+            <!-- Render current story node banner -->
             <?php if (isset($currentNode)): ?> <img class="story-banner"
                     src="assets/<?= htmlspecialchars($currentNodeId) ?>.jpg">
             <?php endif; ?>
@@ -386,7 +389,6 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
             </div>
             <!-- Leaderboard Sidebar View -->
             <?php if (isset($hero['class'])): ?>
-                <!-- User Story Choice Form -->
                 <section class="player-choice-input">
                     <h3>
                         <?= htmlspecialchars($currentNode['text']) ?>
@@ -405,4 +407,4 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
                 <?php endif ?>
             </section>
 
-</html>
+</html><?php renderBottom(); ?>
