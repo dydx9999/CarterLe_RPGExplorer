@@ -1,4 +1,5 @@
 <?php
+require_once 'common.php';
 session_start();
 $errors = [];
 $username = '';
@@ -27,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Password must be 8+ chars with upper, lower, number, and symbol.';
         }
     }
+
     if (empty($errors)) {
         $newUserID = bin2hex(random_bytes(8));
         session_regenerate_id(true);
@@ -35,10 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: game.php');
         exit;
     }
-
-
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,42 +47,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RPG Explorer - Register</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-32x32.png">
+    <link rel="manifest" href="/site.webmanifest">
 </head>
 
 <body>
     <header class="site-header">
         <a class="brand" href="index.php">RPG Explorer</a>
-        <nav>
+        <nav class="site-nav">
             <ul>
                 <li><a href="login.php">Login</a></li>
                 <li><a href="register.php">Register</a></li>
             </ul>
         </nav>
     </header>
+
     <main class="site-main">
-        <h1>User Registration</h1>
-        <div class="signup-container">
-            <form class="signup-form" action="register.php" method="post">
-                <label for="username">Username:</label>
-                <input type="text" name="username" id="username" placeholder="3-20 chars: letters, numbers, _" size="34"
-                    required><br>
-                <label for="password">Password:</label>
-                <input type="password" name="password" id="password"
-                    placeholder="8+ chars: upper, lower, number, symbol" size="34" required><br>
-                <div>
-                    <input class="signup-submit" type="submit" value="Sign up">
+        <section class="auth-page" aria-labelledby="register-title">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1 id="register-title">Join the Realm</h1>
+                    <p>Create your adventurer credentials to start a new story.</p>
                 </div>
-            </form>
-        </div>
-        <?php if (!empty($errors)): ?>
-            <div class=" form-errors">
-                <?php foreach ($errors as $error): ?>
-                    <p><?= htmlspecialchars($error) ?></p>
-                <?php endforeach; ?>
+
+                <?php if (!empty($errors)): ?>
+                    <div class="form-errors" role="alert" aria-live="polite">
+                        <?php foreach ($errors as $error): ?>
+                            <p><?= htmlspecialchars($error) ?></p>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+
+                <form class="auth-form" action="register.php" method="post">
+                    <div class="auth-field">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" id="username" placeholder="3-20 chars: letters, numbers, _"
+                            value="<?= htmlspecialchars($username) ?>" required>
+                    </div>
+                    <div class="auth-field">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password"
+                            placeholder="8+ chars: upper, lower, number, symbol" required>
+                    </div>
+                    <button class="auth-submit" type="submit">Sign up</button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Already have an account?</p>
+                    <a href="login.php">Log in</a>
+                </div>
             </div>
-        <?php endif; ?>
-
+        </section>
     </main>
-</body>
 
-</html>
+    <?php renderBottom(); ?>
