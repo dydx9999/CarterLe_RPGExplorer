@@ -679,3 +679,167 @@ nav ul {
     justify-content: center;
     text-align: center;
 }
+
+/* Responsive */
+@media (max-width: 900px) {
+    .game-overview {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "main"
+            "banner"
+            "choice"
+            "side";
+        gap: var(--space-4);
+    }
+
+    .overview-side {
+        position: static;
+    }
+
+    .class-cards {
+        grid-template-columns: repeat(2, minmax(180px, 1fr));
+    }
+
+    .player-hud {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        padding: var(--space-2);
+    }
+
+    .stats-row {
+        grid-template-columns: repeat(2, minmax(125px, 1fr));
+        justify-content: center;
+        width: 100%;
+    }
+
+    .stats-row span:first-child {
+        text-align: center;
+    }
+
+    .class-avatar {
+        width: 86px;
+        height: 86px;
+    }
+
+    .class-avatar img {
+        width: 74px;
+        max-height: 74px;
+    }
+}
+
+@media (max-width: 560px) {
+
+    #main,
+    .conclusion-main {
+        width: 94%;
+        padding-top: var(--space-4);
+    }
+
+    .overview-main,
+    .overview-inventory,
+    .player-leaderboard,
+    .ending-stats-overview {
+        padding: var(--space-3);
+    }
+
+    .player-choice-input form {
+        padding: var(--space-3);
+        margin-top: var(--space-3);
+    }
+
+    .choice-buttons {
+        width: 100%;
+        text-align: center;
+    }
+
+    .class-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-row span:first-child {
+        grid-column: auto;
+    }
+
+    .ending-stats-overview .overview-row {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-1);
+    }
+
+    .auth-page {
+        padding: var(--space-4) var(--space-2);
+        min-height: calc(100vh - 150px);
+    }
+
+    .auth-card {
+        padding: var(--space-4);
+        border-radius: 12px;
+    }
+
+    .auth-header h1 {
+        font-size: 1.7rem;
+    }
+}
+
+.story-banner {
+    aspect-ratio: 3/2;
+    width: 100%;
+    max-width: 1368px;
+    max-height: 500px;
+    object-fit: cover;
+    display: block;
+}
+
+.conclusion-main .ending-header,
+.conclusion-main .ending-overview-primary,
+.conclusion-main .conclusion,
+.conclusion-main .ending-overview-history,
+.conclusion-main+.new-run-button {
+    opacity: 0;
+    transform: translateY(18px);
+    animation-fill-mode: both;
+    will-change: transform, opacity;
+}
+
+.conclusion-main .ending-header {
+    animation: endingFadeUp 700ms ease-out 0ms both;
+}
+
+.conclusion-main .ending-overview-primary {
+    animation: endingFadeUp 700ms ease-out 180ms both;
+}
+
+.conclusion-main .conclusion {
+    animation: endingReveal 900ms cubic-bezier(.22, 1, .36, 1) 360ms both;
+}
+
+.conclusion-main .ending-overview-history {
+    animation: endingFadeUp 700ms ease-out 540ms both;
+}
+
+.conclusion-main+.new-run-button {
+    animation: endingFadeUp 700ms ease-out 720ms both;
+}
+@media (prefers-reduced-motion: reduce) {
+
+    .conclusion-main .ending-header,
+    .conclusion-main .ending-overview-primary,
+    .conclusion-main .conclusion,
+    .conclusion-main .ending-overview-history,
+    .conclusion-main+.new-run-button,
+    .story-header h1,
+    .story-banner,
+    .player-choice-input h3,
+    .story-choice-form .story-choice-button,
+    .stats-row .hp-stat-pill {
+        animation: none;
+        opacity: 1;
+        transform: none;
+        filter: none;
+    }
+}
+
