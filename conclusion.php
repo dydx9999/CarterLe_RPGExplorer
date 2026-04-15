@@ -24,15 +24,37 @@ $runHistory = array_reverse(normalizeScores($runHistory));
             <h1>
                 <?= htmlspecialchars($endingNode) ?>
             </h1>
-            <p>
-                <?= htmlspecialchars($endingNodeText) ?>
-            </p>
         <?php else: ?>
             <h1>No ending reached yet.</h1>
             <p>Complete a playthrough in story mode to unlock an ending.</p>
         <?php endif ?>
+    </div>
 
-    <!-- TODO: ADD ENDING SCREEN PLAYER STATS OVERVIEW -->
+
+
+
+    <!-- Display custom ending screen -->
+    <?php if (isset($endingNode)): ?>
+        <div>
+            <img class="conclusion story-banner" src="assets/<?= htmlspecialchars($endingNode) ?>.gif">
+        </div>
+    <?php endif; ?>
+    <?php if (!empty($endingNode) && !empty($endingNodeText)): ?>
+        <h2> <?= htmlspecialchars($endingNodeText) ?> </h2>
+    <?php endif; ?>
+
+    <!-- End Screen Overview -->
+    <div class="ending-stats-overview ending-overview-primary">
+        <h2>Overview for: <?= htmlspecialchars($username) ?></h2>
+        <div class="overview-row">
+            <strong>Ending Achieved:</strong>
+            <span><?= htmlspecialchars($endingNode ?? 'No ending reached yet.') ?></span>
+        </div>
+        <div class="overview-row">
+            <strong>Score:</strong>
+            <span><?= htmlspecialchars((string) $score) ?></span>
+        </div>
+    </div>
     <!-- Display game run history -->
     <div class="ending-stats-overview ending-overview-history">
         <h2>Run History</h2>
@@ -54,7 +76,8 @@ $runHistory = array_reverse(normalizeScores($runHistory));
 
 
 
-</body>
+</main>
+
 <!-- Start new game run button -->
 <?php if (!empty($endingNode) && !empty($endingNodeText)): ?>
     <div class="new-run-button">
@@ -65,4 +88,3 @@ $runHistory = array_reverse(normalizeScores($runHistory));
 <?php endif; ?>
 
 
-<?php renderBottom(); ?>
