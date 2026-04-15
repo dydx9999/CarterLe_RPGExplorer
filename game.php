@@ -235,16 +235,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (in_array($_SESSION['node'], $endingNodes, true)) {
                 $_SESSION['ending_node'] = $_SESSION['node'];
                 $_SESSION['ending_node_text'] = $storyNodes[$_SESSION['node']]['text'] ?? '';
-                if (!isset($_SESSION['run_history']) || !is_array($_SESSION['run_history'])) {
-                    $_SESSION['run_history'] = [];
+                if (!isset($_SESSION['scores']) || !is_array($_SESSION['scores'])) {
+                    $_SESSION['scores'] = [];
                 }
-
-                $_SESSION['run_history'][] = [
+                // Log username, score, and ending type achieved for current game iteration 
+                $_SESSION['scores'][] = [
                     'username' => $_SESSION['username'] ?? 'Explorer',
                     'score' => (int) ($_SESSION['hero']['score'] ?? 0),
                     'ending' => $_SESSION['ending_node'],
                 ];
-
+                $_SESSION['scores'] = normalizeScores($_SESSION['scores']);
+                persistScoresCookie($_SESSION['scores']);
+                // Redirect player to ending screen 
                 header('Location: conclusion.php');
                 exit;
             }
@@ -253,12 +255,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 }
+$runHistory = $_SESSION['scores'] ?? [];
 
+if (!is_array($runHistory)) {
+    $runHistory = [];
+}
+
+// Prepare leaderboard data from session scores
+$runHistory = normalizeScores($runHistory);
+
+// Sort global leaderboard highest to lowest by score
+usort($runHistory, static function (array $a, array $b): int {
+    $scoreCompare = ((int) ($b['score'] ?? 0)) <=> ((int) ($a['score'] ?? 0));
+    if ($scoreCompare !== 0) {
+        return $scoreCompare;
+    }
+
+    return strcmp((string) ($a['username'] ?? ''), (string) ($b['username'] ?? ''));
+});
+
+// Keep sidebar leaderboard compact
+$recentRunHistory = array_slice($runHistory, 0, 5);
+// Initialize session variables 
 $hero = $_SESSION['hero'] ?? null;
 $hasSelectedClass = !empty($hero['class']) && isset($classTemplates[$hero['class']]);
 $currentNodeId = $_SESSION['node'] ?? 'awakening';
 $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
-
 ?>
 
 <?php rendertop('RPG Explorer - Story Mode'); ?>
@@ -379,15 +401,30 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
                 <!-- Leaderboard Sidebar View -->
                 <aside class="player-leaderboard">
                     <h3>Leaderboard</h3>
-                    <ul class="leaderboard-items">
-                        <li>
-                            <span><?= htmlspecialchars($_SESSION['username']) ?></span>
-                            <strong><?= htmlspecialchars((string) ($hero['score'] ?? 0)) ?></strong>
-                        </li>
-                    </ul>
+                    <div class="leaderboard-current-score">
+                        <span>Current Session Score</span>
+                        <strong><?= htmlspecialchars((string) ($hero['score'] ?? 0)) ?></strong>
+                    </div>
+                    <h4 class="leaderboard-history-title">Global Leaderboard</h4>
+                    <?php if (!empty($recentRunHistory)): ?>
+                        <ul class="leaderboard-items">
+                            <?php foreach ($recentRunHistory as $run): ?>
+                                <li class="leaderboard-run-item">
+                                    <div class="leaderboard-run-topline">
+                                        <strong><?= htmlspecialchars((string) ($run['username'] ?? 'Explorer')) ?></strong>
+                                        <span>Score: <?= htmlspecialchars((string) ($run['score'] ?? 0)) ?></span>
+                                    </div>
+                                    <p>Ending: <?= htmlspecialchars((string) ($run['ending'] ?? 'Unknown')) ?></p>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else: ?>
+                        <p class="leaderboard-empty">No completed runs yet.</p>
+                    <?php endif; ?>
                 </aside>
             </div>
-            <!-- Leaderboard Sidebar View -->
+
+
             <?php if (isset($hero['class'])): ?>
                 <section class="player-choice-input">
                     <h3>

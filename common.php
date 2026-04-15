@@ -1,15 +1,111 @@
 <?php
+const RPG_SCORES_COOKIE = 'rpg_scores';
+const RPG_SCORES_LIMIT = 10;
+const RPG_SCORES_COOKIE_TTL_SECONDS = 30 * 24 * 60 * 60;
+
+function normalizeScores(array $scores): array
+{
+    $cleanScores = [];
+
+    foreach ($scores as $entry) {
+        if (!is_array($entry)) {
+            continue;
+        }
+
+        $username = trim((string) ($entry['username'] ?? 'Explorer'));
+        if ($username === '') {
+            $username = 'Explorer';
+        }
+
+        $ending = trim((string) ($entry['ending'] ?? 'Unknown'));
+        if ($ending === '') {
+            $ending = 'Unknown';
+        }
+
+        $cleanScores[] = [
+            'username' => $username,
+            'score' => (int) ($entry['score'] ?? 0),
+            'ending' => $ending,
+        ];
+    }
+
+
+
+    return $cleanScores;
+}
+
+function persistScoresCookie(array $scores): void
+{
+    $scores = normalizeScores($scores);
+    $encodedScores = json_encode($scores);
+
+    if (!is_string($encodedScores)) {
+        return;
+    }
+
+    $isSecure = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+
+    if (!headers_sent()) {
+        setcookie(
+            RPG_SCORES_COOKIE,
+            $encodedScores,
+            [
+                'expires' => time() + RPG_SCORES_COOKIE_TTL_SECONDS,
+                'path' => '/',
+                'secure' => $isSecure,
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]
+        );
+    }
+
+    $_COOKIE[RPG_SCORES_COOKIE] = $encodedScores;
+}
+
 function requireLogin(): void
 {
     session_start();
-    if (!isset($_SESSION['user_id'])) {
-        header('Location: login.php');
-        exit;
+
+    // 1) one-time migration from the old session key
+    if (isset($_SESSION['run_history']) && !isset($_SESSION['scores'])) {
+        $_SESSION['scores'] = normalizeScores($_SESSION['run_history']);
+        persistScoresCookie(scores: $_SESSION['scores']);
     }
+    unset($_SESSION['run_history']);
 
 } ?>
+    // 2) load scores from cookie if session does not already have them
+    if (!isset($_SESSION['scores']) || !is_array($_SESSION['scores'])) {
+        if (isset($_COOKIE[RPG_SCORES_COOKIE]) && $_COOKIE[RPG_SCORES_COOKIE] !== '') {
+            $cookieScores = json_decode($_COOKIE[RPG_SCORES_COOKIE], true);
+            $_SESSION['scores'] = is_array($cookieScores) ? normalizeScores($cookieScores) : [];
+        } else {
+            $_SESSION['scores'] = [];
+        }
+    } else {
+        $_SESSION['scores'] = normalizeScores($_SESSION['scores']);
+    }
 
-<?php
+    // 3) normal auth or anonymous restore
+    if (isset($_SESSION['user_id'])) {
+        if (!isset($_SESSION['username']) || trim((string) $_SESSION['username']) === '') {
+            $_SESSION['username'] = 'Explorer';
+        }
+        return;
+    }
+
+    if (!empty($_SESSION['scores'])) {
+        session_regenerate_id(true);
+        $_SESSION['user_id'] = bin2hex(random_bytes(8));
+        $_SESSION['username'] = 'Explorer';
+        persistScoresCookie($_SESSION['scores']);
+        return;
+    }
+
+    header('Location: login.php');
+    exit;
+}
+
 function renderTop(string $title): void
 {
     ?>

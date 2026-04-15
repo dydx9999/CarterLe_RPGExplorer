@@ -6,8 +6,13 @@ $endingNode = $_SESSION['ending_node'] ?? null;
 $endingNodeText = $_SESSION['ending_node_text'] ?? null;
 $username = $_SESSION['username'] ?? 'Explorer';
 $score = $_SESSION['hero']['score'] ?? 0;
+$runHistory = $_SESSION['scores'] ?? [];
 
+if (!is_array($runHistory)) {
+    $runHistory = [];
+}
 
+$runHistory = array_reverse(normalizeScores($runHistory));
 
 ?>
 <?php rendertop('RPG Explorer - Conclusion'); ?>
@@ -28,6 +33,23 @@ $score = $_SESSION['hero']['score'] ?? 0;
         <?php endif ?>
 
     <!-- TODO: ADD ENDING SCREEN PLAYER STATS OVERVIEW -->
+    <!-- Display game run history -->
+    <div class="ending-stats-overview ending-overview-history">
+        <h2>Run History</h2>
+        <?php if (!empty($runHistory)): ?>
+            <?php foreach ($runHistory as $run): ?>
+                <div class="overview-row">
+                    <strong><?= htmlspecialchars((string) ($run['username'] ?? 'Explorer')) ?></strong>
+                    <span>
+                        Score: <?= htmlspecialchars((string) ($run['score'] ?? 0)) ?>
+                        | Ending: <?= htmlspecialchars((string) ($run['ending'] ?? 'Unknown')) ?>
+                    </span>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No completed runs yet.</p>
+        <?php endif; ?>
+    </div>
 
 
 
