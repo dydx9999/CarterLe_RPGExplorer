@@ -51,8 +51,8 @@ $storyNodes = [
     'Mountain Path' => [
         'text' => 'You have trouble climbing up the steep path. A mysterious stranger offers to help.',
         'choices' => [
-            'Speak to the stranger' => ['next' => 'The Watcher', 'score-delta' => 100],
-            'Immediately attack them' => ['next' => 'Ambush', 'score-delta' => 200],
+            'Speak to the stranger' => ['next' => 'The Watcher', 'score-delta' => 200],
+            'Immediately attack them' => ['next' => 'Ambush', 'score-delta' => 100],
         ],
     ],
     //Node 4 - Hidden Gratitude 
@@ -121,7 +121,7 @@ $storyNodes = [
     ],
     // Node 12 - Secret Guide
     'Secret Guide' => [
-        'text' => 'The stranger reveals a concealed tunnel beneath the mountain.',
+        'text' => 'The stranger reveals a concealed tunnel beneath the mountain and hands you a key.',
         'choices' => [
             'Enter the tunnel' => ['next' => 'Hidden Chamber', 'score-delta' => 400],
             'Refuse and take main path' => ['next' => 'Battlefield', 'score-delta' => 100],
@@ -217,6 +217,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($_SESSION['node'] === 'Hidden Gratitude') {
                 array_push($_SESSION['hero']['items'], "Glowing Sigil");
+                $_SESSION['hero']['stats']['atk'] += 30;
             } elseif (
                 $currentNodeId === 'Precision'
                 && $choiceLabel === 'Equip armor'
@@ -229,9 +230,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 in_array($choiceLabel, ['Leave it', 'Grab loot and run'], true)
             ) {
                 $_SESSION['hero']['stats']['hp'] -= 20;
+                $currentNodeId === 'Secret Guide'
+                && $choiceLabel === 'Enter the tunnel'
+                && !in_array("Golden Key", $_SESSION['hero']['items'], true)
+            ) {
+                array_push($_SESSION['hero']['items'], "Golden Key");
+            } elseif (
+                $currentNodeId === 'Mountain Path'
+                && $choiceLabel === 'Immediately attack them'
+            ) {
+                $_SESSION['hero']['stats']['hp'] -= 20;
             }
-
-
+            // Checks if current node is an ending node 
             if (in_array($_SESSION['node'], $endingNodes, true)) {
                 $_SESSION['ending_node'] = $_SESSION['node'];
                 $_SESSION['ending_node_text'] = $storyNodes[$_SESSION['node']]['text'] ?? '';
@@ -284,7 +294,6 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
 ?>
 
 <?php rendertop('RPG Explorer - Story Mode'); ?>
-
 <main id="main" class="site-main">
     <?php if (!$hasSelectedClass): ?>
         <!-- User Welcome -->
