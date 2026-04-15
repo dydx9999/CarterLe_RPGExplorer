@@ -88,3 +88,4 @@ $runHistory = array_reverse(normalizeScores($runHistory));
 <?php endif; ?>
 
 
+<?php renderBottom(); ?>
