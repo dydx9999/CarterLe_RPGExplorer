@@ -19,7 +19,7 @@ $runHistory = array_reverse(normalizeScores($runHistory));
 
 <main class="site-main conclusion-main">
     <!-- Display ending type -->
-    <div class="ending-header">
+    <div class="typewriter">
         <?php if (!empty($endingNode) && !empty($endingNodeText)): ?>
             <h1>
                 <?= htmlspecialchars($endingNode) ?>
