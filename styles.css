@@ -824,6 +824,26 @@ nav ul {
 .conclusion-main+.new-run-button {
     animation: endingFadeUp 700ms ease-out 720ms both;
 }
+@keyframes endingReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(22px) scale(0.985);
+        filter: blur(2px);
+    }
+
+    65% {
+        opacity: 1;
+        transform: translateY(-2px) scale(1.005);
+        filter: blur(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
 
     .conclusion-main .ending-header,
@@ -843,3 +863,25 @@ nav ul {
     }
 }
 
+
+@keyframes typing {
+    from {
+        width: 0
+    }
+
+    to {
+        width: 100%
+    }
+}
+
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    100% {
+        border-color: orange;
+    }
+}
