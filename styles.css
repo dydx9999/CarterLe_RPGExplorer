@@ -457,6 +457,41 @@ nav ul {
     margin: 0 0 var(--space-5);
 }
 
+/* Story node cinematic transitions */
+.story-header h1,
+.story-banner,
+.player-choice-input h3 {
+    opacity: 0;
+    animation-fill-mode: both;
+    will-change: transform, opacity, filter;
+}
+
+.story-header h1 {
+    animation: storyNodeTitleReveal 620ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.story-banner {
+    animation: storyNodeBannerReveal 900ms cubic-bezier(.22, 1, .36, 1) 140ms both;
+    transform-origin: center;
+    outline: 2px solid var(--accent)
+}
+
+.player-choice-input h3 {
+    animation: storyNodeTextReveal 700ms ease-out 300ms both;
+}
+
+.story-choice-form .story-choice-button {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+    filter: saturate(0.85);
+    animation: storyChoiceReveal 520ms cubic-bezier(.22, 1, .36, 1) calc(460ms + var(--choice-delay, 0ms)) both;
+}
+
+.story-choice-form .story-choice-button:hover,
+.story-choice-form .story-choice-button:focus-visible {
+    filter: none;
+}
+
 .game-overview {
     display: grid;
     grid-template-columns: 3fr minmax(300px, 1fr);
