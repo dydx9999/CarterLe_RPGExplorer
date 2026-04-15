@@ -1,35 +1,26 @@
 <?php
-require_once 'common.php'
+require_once 'common.php';
+// Render guest landing page shell
+renderTopGuest('RPG Explorer - Landing')
     ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RPG Explorer - Landing</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-32x32.png">
-    <link rel="manifest" href="/site.webmanifest">
-</head>
 
-<body>
-    <header class="site-header">
-        <a class="brand" href="index.php">RPG Explorer</a>
+<main class="site-main">
+    <!-- Landing hero card -->
+    <section class="auth-page" aria-labelledby="landing-title">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1 id="landing-title">Welcome, Explorer!</h1>
+                <p>Begin your adventure by logging in or creating a new explorer account.</p>
+            </div>
 
-    </header>
-
-    <main id="index-main">
-        <h1>Welcome, Explorer!</h1>
-
-        <div class="welcome-buttons">
-            <a class="choice-buttons" href="login.php">Login</a>
-            <a class="choice-buttons" href="register.php">Sign Up</a>
+            <!-- Primary guest actions -->
+            <div class="welcome-buttons">
+                <a class="auth-submit" href="login.php">Log in</a>
+                <a class="auth-submit" href="register.php">Sign up</a>
+            </div>
         </div>
+    </section>
+</main>
 
-
-    </main>
-
-    <?php renderBottom(); ?>
+<?php renderBottom(); ?>

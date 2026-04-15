@@ -73,7 +73,6 @@ function requireLogin(): void
     }
     unset($_SESSION['run_history']);
 
-} ?>
     // 2) load scores from cookie if session does not already have them
     if (!isset($_SESSION['scores']) || !is_array($_SESSION['scores'])) {
         if (isset($_COOKIE[RPG_SCORES_COOKIE]) && $_COOKIE[RPG_SCORES_COOKIE] !== '') {
@@ -138,19 +137,50 @@ function renderTop(string $title): void
         <?php
 }
 
+function renderTopGuest($title): void
+{
+    ?>
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+            <link rel="stylesheet" href="styles.css">
+            <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+            <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+            <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-32x32.png">
+            <link rel="manifest" href="/site.webmanifest">
+            <title>
+                <?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?>
+            </title>
+        </head>
+
+        <body>
+            <header class="site-header">
+                <a class="brand" href="index.php">RPG Explorer</a>
+                <nav class="site-nav">
+                    <ul>
+                        <li><a href="login.php">Login</a></li>
+                        <li><a href=register.php>Register</a></li>
+                    </ul>
+                </nav>
+            </header>
+            <?php
+}
+
 function renderBottom(): void
 {
     ?>
-        <footer class="site-footer">
-            <p>
-                ©2026 RPG Explorer.
-            </p>
-        </footer>
-        </div>
-    </body>
+            <footer class="site-footer">
+                <p>
+                    ©2026 RPG Explorer.
+                </p>
+            </footer>
+            </div>
+        </body>
 
-    </html>
-    <?php
+        </html>
+        <?php
 }
-
-?>

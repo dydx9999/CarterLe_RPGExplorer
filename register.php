@@ -1,6 +1,7 @@
 <?php
 require_once 'common.php';
 session_start();
+// Initialize register form state
 $errors = [];
 $username = '';
 $password = '';
@@ -10,6 +11,7 @@ $validPassword = false;
 $usernamePattern = '/^[A-Za-z0-9_]{3,20}$/';
 $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,64}$/';
 
+// Handle registration form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
@@ -30,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
+        // Start authenticated session for newly registered user
         $newUserID = bin2hex(random_bytes(8));
         session_regenerate_id(true);
         $_SESSION['user_id'] = $newUserID;
@@ -38,38 +41,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }
-?>
-<!DOCTYPE html>
-<html lang="en">
+// Render register page shell
+renderTopGuest('RPG Explorer - Register')
+    ?>
+<main class="site-main">
+    <section class="auth-page" aria-labelledby="register-title">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1 id="register-title">Join the Realm</h1>
+                <p>Create your adventurer credentials to start a new story.</p>
+            </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RPG Explorer - Register</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-32x32.png">
-    <link rel="manifest" href="/site.webmanifest">
-</head>
-
-<body>
-    <header class="site-header">
-        <a class="brand" href="index.php">RPG Explorer</a>
-        <nav class="site-nav">
-            <ul>
-                <li><a href="login.php">Login</a></li>
-                <li><a href="register.php">Register</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main class="site-main">
-        <section class="auth-page" aria-labelledby="register-title">
-            <div class="auth-card">
-                <div class="auth-header">
-                    <h1 id="register-title">Join the Realm</h1>
-                    <p>Create your adventurer credentials to start a new story.</p>
                 </div>
 
                 <?php if (!empty($errors)): ?>
@@ -102,4 +84,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </section>
     </main>
 
-    <?php renderBottom(); ?>
+<?php renderBottom(); ?>
