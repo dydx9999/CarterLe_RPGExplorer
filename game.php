@@ -230,6 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 in_array($choiceLabel, ['Leave it', 'Grab loot and run'], true)
             ) {
                 $_SESSION['hero']['stats']['hp'] -= 20;
+            } elseif (
                 $currentNodeId === 'Secret Guide'
                 && $choiceLabel === 'Enter the tunnel'
                 && !in_array("Golden Key", $_SESSION['hero']['items'], true)
@@ -294,9 +295,10 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
 ?>
 
 <?php rendertop('RPG Explorer - Story Mode'); ?>
+<!-- Site Main -->
 <main id="main" class="site-main">
     <?php if (!$hasSelectedClass): ?>
-        <!-- User Welcome -->
+        <!-- User welcome header -->
         <section class="user-welcome">
             <h1>Welcome, <?= htmlspecialchars($_SESSION['username']) ?>!
             </h1>
@@ -312,7 +314,7 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
                     <?php foreach ($classTemplates as $className => $template): ?>
                         <label class="class-card" for="class-<?= htmlspecialchars($className) ?>">
                             <input type="radio" name="class" id="class-<?= htmlspecialchars($className) ?>"
-                                value="<?= htmlspecialchars($className) ?>" <?= $className === 'warrior' ? 'checked' : '' ?>>
+                                value="<?= htmlspecialchars($className) ?>" <?= $className === 'warrior' ?>>
                             <span class="class-card-body">
                                 <span class="class-card-title"><?= ucfirst(htmlspecialchars($className)) ?></span>
                                 <span class="class-card-description">
@@ -334,14 +336,13 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
             </form>
         </section>
     <?php endif; ?>
-
     <!-- Display current story node title as header -->
     <?php if (isset($hero['class'])): ?>
         <div class="story-header">
-            <h1> <?php if (isset($_SESSION['node'])): ?>
+            <h2> <?php if (isset($_SESSION['node'])): ?>
                     <?= htmlspecialchars($_SESSION['node']) ?>
                 <?php endif ?>
-            </h1>
+            </h2>
         </div>
         <section class="game-overview">
             <!-- Main game overview -->
@@ -357,7 +358,7 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
                                     <?php if ($hasSelectedClass): ?>
                                         (<?= ucfirst(htmlspecialchars($hero['class'])) ?>)
                                     <?php endif; ?></strong></span>
-                            <span><strong>&#x2764;&#xfe0f; HP:
+                            <span class="hp-stat"><strong>&#x2764;&#xfe0f; HP:
                                     <?= htmlspecialchars($hero['stats']['hp']) ?>
                             </span></strong>
                             <span><strong>&#9876; Attack:
@@ -393,6 +394,7 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
             <?php endif; ?>
 
             <!-- Hero Inventory -->
+            <div class="overview-side">
 
                 <aside class="overview-inventory hero-inventory">
                     <h3>Inventory</h3>
@@ -405,7 +407,6 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
                     <?php else: ?>
                         <p>No items yet. Pick a class first.</p>
                     <?php endif; ?>
-                </form>
                 </aside>
                 <!-- Leaderboard Sidebar View -->
                 <aside class="player-leaderboard">
@@ -434,18 +435,22 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
             </div>
 
 
+            <!-- Player Choice Input Form -->
             <?php if (isset($hero['class'])): ?>
                 <section class="player-choice-input">
                     <h3>
                         <?= htmlspecialchars($currentNode['text']) ?>
                     </h3>
-                    <form method="post">
+                    <form class="story-choice-form" method="post">
                         <?php if (!empty($currentNode['choices'])): ?>
+                            <?php $choiceIndex = 0; ?>
                             <?php foreach ($currentNode['choices'] as $choiceLabel => $choiceData): ?>
-                                <button class="choice-buttons" type="submit" name="choice_label"
-                                    value="<?= htmlspecialchars($choiceLabel) ?>">
+                                <button class="choice-buttons story-choice-button" type="submit" name="choice_label"
+                                    value="<?= htmlspecialchars($choiceLabel) ?>"
+                                    style="--choice-delay: <?= (int) ($choiceIndex * 120) ?>ms;">
                                     <?= htmlspecialchars($choiceLabel) ?>
                                 </button>
+                                <?php $choiceIndex++; ?>
                             <?php endforeach; ?>
                         <?php endif; ?>
 
@@ -453,4 +458,13 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
                 <?php endif ?>
             </section>
 
-</html><?php renderBottom(); ?>
+        </section>
+
+
+
+    <?php endif ?>
+</main>
+
+
+
+<?php renderBottom(); ?>
