@@ -52,36 +52,37 @@ renderTopGuest('RPG Explorer - Register')
                 <p>Create your adventurer credentials to start a new story.</p>
             </div>
 
+            <!-- Validation errors -->
+            <?php if (!empty($errors)): ?>
+                <div class="form-errors" role="alert" aria-live="polite">
+                    <?php foreach ($errors as $error): ?>
+                        <p><?= htmlspecialchars($error) ?></p>
+                    <?php endforeach; ?>
                 </div>
+            <?php endif; ?>
 
-                <?php if (!empty($errors)): ?>
-                    <div class="form-errors" role="alert" aria-live="polite">
-                        <?php foreach ($errors as $error): ?>
-                            <p><?= htmlspecialchars($error) ?></p>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-
-                <form class="auth-form" action="register.php" method="post">
-                    <div class="auth-field">
-                        <label for="username">Username</label>
-                        <input type="text" name="username" id="username" placeholder="3-20 chars: letters, numbers, _"
-                            value="<?= htmlspecialchars($username) ?>" required>
-                    </div>
-                    <div class="auth-field">
-                        <label for="password">Password</label>
-                        <input type="password" name="password" id="password"
-                            placeholder="8+ chars: upper, lower, number, symbol" required>
-                    </div>
-                    <button class="auth-submit" type="submit">Sign up</button>
-                </form>
-
-                <div class="auth-footer">
-                    <p>Already have an account?</p>
-                    <a href="login.php">Log in</a>
+            <!-- Registration form -->
+            <form class="auth-form" action="register.php" method="post">
+                <div class="auth-field">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" placeholder="3-20 chars: letters, numbers, _"
+                        value="<?= htmlspecialchars($username) ?>" required>
                 </div>
+                <div class="auth-field">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password"
+                        placeholder="8+ chars: upper, lower, number, symbol" required>
+                </div>
+                <button class="auth-submit" type="submit">Sign up</button>
+            </form>
+
+            <!-- Auth page footer links -->
+            <div class="auth-footer">
+                <p>Already have an account?</p>
+                <a href="login.php">Log in</a>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+</main>
 
 <?php renderBottom(); ?>
