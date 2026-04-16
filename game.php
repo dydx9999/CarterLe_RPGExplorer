@@ -1,5 +1,4 @@
 <?php
-require_once 'common.php';
 require_once __DIR__ . '/common.php';
 require_once __DIR__ . '/story-nodes.php';
 require_once __DIR__ . '/game-engine.php';
@@ -146,14 +145,17 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
                     </div>
                     <!-- Class-specific HUD avatar rendering -->
                     <div class="class-avatar">
-                        <?php if (isset($hero['class']) && $hero['class'] === 'warrior'): ?>
-                            <img src="assets/warrior-avatar.png" alt="Warrior avatar">
-                        <?php endif; ?>
-                        <?php if (isset($hero['class']) && $hero['class'] === 'mage'): ?>
-                            <img src="assets/mage-avatar.png" alt="Mage avatar">
-                        <?php endif; ?>
-                        <?php if (isset($hero['class']) && $hero['class'] === 'rogue'): ?>
-                            <img src="assets/rogue-avatar.png" alt="Rogue avatar">
+                        <?php
+                        $avatarByClass = [
+                            'warrior' => 'warrior-avatar.png',
+                            'mage' => 'mage-avatar.png',
+                            'rogue' => 'rogue-avatar.png',
+                        ];
+                        $heroClass = $hero['class'] ?? null;
+                        if ($heroClass !== null && isset($avatarByClass[$heroClass])):
+                            ?>
+                            <img src="assets/<?= htmlspecialchars($avatarByClass[$heroClass]) ?>"
+                                alt="<?= ucfirst(htmlspecialchars($heroClass)) ?> avatar">
                         <?php endif; ?>
                     </div>
                 </section>
