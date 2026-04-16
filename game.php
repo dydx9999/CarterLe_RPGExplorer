@@ -338,11 +338,14 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
     <?php endif; ?>
     <!-- Display current story node title as header -->
     <?php if (isset($hero['class'])): ?>
-        <div class="story-header">
-            <h2> <?php if (isset($_SESSION['node'])): ?>
+        <div class="story-header typewriter">
+            <h1>
+                <?php if (isset($_SESSION['node']) && $_SESSION['node'] === 'awakening'): ?>
                     <?= htmlspecialchars($_SESSION['node']) ?>
+                <?php elseif (isset($_SESSION['node'])): ?>
+                    <?= htmlspecialchars(string: $_SESSION['node']) ?>
                 <?php endif ?>
-            </h2>
+            </h1>
         </div>
         <section class="game-overview">
             <!-- Main game overview -->

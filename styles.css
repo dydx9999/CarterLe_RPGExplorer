@@ -135,7 +135,6 @@ nav ul {
 }
 
 .choice-buttons:hover,
-.choice-buttons:focus-visible {
 .choice-buttons:focus-visible,
 .class-submit button:hover,
 .class-submit button:focus-visible {
@@ -153,12 +152,16 @@ nav ul {
 }
 
 .welcome-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-5);
-    margin-top: var(--space-4);
-    justify-content: center;
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+}
+
+.welcome-buttons .auth-submit {
+    display: block;
+    margin-top: 0;
     text-align: center;
+    text-decoration: none;
 }
 
 /* Auth */
@@ -391,7 +394,9 @@ nav ul {
     border: 1px solid rgba(var(--accent-rgb), 0.62);
     border-radius: 12px;
     background: linear-gradient(180deg, var(--surface-1), var(--bg-0));
-    transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+    outline: 1px solid var(--accent);
+    color: var(--text);
+    transition: transform 140ms ease, background 140ms ease, border-color 140ms ease, outline 140ms ease, box-shadow 140ms ease;
 }
 
 .class-card:hover .class-card-body,
@@ -1033,6 +1038,24 @@ nav ul {
     }
 }
 
+.index-banner {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-7);
+
+
+}
+
+.typewriter {
+    overflow: hidden;
+    border-right: .15em solid orange;
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: .05em;
+    animation:
+        typing 4.0s steps(40, end),
+        blink-caret .75s step-end infinite;
+}
 
 @keyframes typing {
     from {
