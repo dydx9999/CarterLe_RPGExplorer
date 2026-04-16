@@ -1,113 +1,38 @@
 <?php
 require_once 'common.php';
+require_once __DIR__ . '/common.php';
 require_once __DIR__ . '/story-nodes.php';
+require_once __DIR__ . '/game-engine.php';
+
 requireLogin();
 
 $currentNodeId = $_SESSION['node'] ?? 'awakening';
-
-// Hero class creation templates
-$classTemplates = [
-    'warrior' => [
-        'stats' => ['hp' => 140, 'atk' => 18, 'def' => 14, 'mana' => 20],
-        'items' => ['Iron Sword', 'Wooden Shield']
-    ],
-    'mage' => [
-        'stats' => ['hp' => 80, 'atk' => 22, 'def' => 6, 'mana' => 120],
-        'items' => ['Wooden Staff', 'Basic Spellbook']
-
-    ],
-    'rogue' => [
-        'stats' => ['hp' => 100, 'atk' => 16, 'def' => 9, 'mana' => 40],
-        'items' => ['Daggers', 'Stealth Cloak']
-    ]
-
-];
-// Hero class navcard descriptions 
-$classDescriptions = [
-    'warrior' => 'Frontline tank with high durability and steady melee damage.',
-    'mage' => 'Arcane specialist with strong spells and a deep mana pool.',
-    'rogue' => 'Fast skirmisher focused on precision, agility, and stealth.'
-];
+$classTemplates = rpgGetClassTemplates();
+$classDescriptions = rpgGetClassDescriptions();
 
 // Form Handling 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $class = $_POST['class'] ?? '';
-
     if (isset($_POST['reset'])) {
-        $_SESSION['node'] = 'awakening';
-        $_SESSION['score'] = 0;
-        unset($_SESSION['ending_node']);
-        unset($_SESSION['ending_node_text']);
-        unset($_SESSION['hero']);
+        rpgResetRunState();
         header('Location: game.php');
         exit;
-    } elseif (isset($classTemplates[$class])) {
-        $score = $_SESSION['score'] ?? 0;
-        $_SESSION['hero'] = [
-            'class' => $class,
-            'stats' => $classTemplates[$class]['stats'],
-            'items' => $classTemplates[$class]['items'],
-            'score' => $score,
-        ];
-    } elseif (isset($_POST['choice_label'])) {
-        $choiceLabel = $_POST['choice_label'];
-        $currentNode = $storyNodes[$currentNodeId] ?? null;
-        if ($currentNode && isset($currentNode['choices'][$choiceLabel]['next'])) {
-            $_SESSION['node'] = $currentNode['choices'][$choiceLabel]['next'];
-            $_SESSION['hero']['score'] = $currentNode['choices'][$choiceLabel]['score-delta']
-                + $_SESSION['hero']['score'];
-
-            if ($_SESSION['node'] === 'Hidden Gratitude') {
-                array_push($_SESSION['hero']['items'], "Glowing Sigil");
-                $_SESSION['hero']['stats']['atk'] += 30;
-            } elseif (
-                $currentNodeId === 'Precision'
-                && $choiceLabel === 'Equip armor'
-                && !in_array("Rusty Armor", $_SESSION['hero']['items'], true)
-            ) {
-                array_push($_SESSION['hero']['items'], "Rusty Armor");
-                $_SESSION['hero']['stats']['def'] += 10;
-            } elseif (
-                in_array($currentNodeId, ['Precision', 'Abandoned Armory'], true) &&
-                in_array($choiceLabel, ['Leave it', 'Grab loot and run'], true)
-            ) {
-                $_SESSION['hero']['stats']['hp'] -= 20;
-            } elseif (
-                $currentNodeId === 'Secret Guide'
-                && $choiceLabel === 'Enter the tunnel'
-                && !in_array("Golden Key", $_SESSION['hero']['items'], true)
-            ) {
-                array_push($_SESSION['hero']['items'], "Golden Key");
-            } elseif (
-                $currentNodeId === 'Mountain Path'
-                && $choiceLabel === 'Immediately attack them'
-            ) {
-                $_SESSION['hero']['stats']['hp'] -= 20;
-            }
-            // Checks if current node is an ending node 
-            if (in_array($_SESSION['node'], $endingNodes, true)) {
-                $_SESSION['ending_node'] = $_SESSION['node'];
-                $_SESSION['ending_node_text'] = $storyNodes[$_SESSION['node']]['text'] ?? '';
-                if (!isset($_SESSION['scores']) || !is_array($_SESSION['scores'])) {
-                    $_SESSION['scores'] = [];
-                }
-                // Log username, score, and ending type achieved for current game iteration 
-                $_SESSION['scores'][] = [
-                    'username' => $_SESSION['username'] ?? 'Explorer',
-                    'score' => (int) ($_SESSION['hero']['score'] ?? 0),
-                    'ending' => $_SESSION['ending_node'],
-                ];
-                $_SESSION['scores'] = normalizeScores($_SESSION['scores']);
-                persistScoresCookie($_SESSION['scores']);
-                // Redirect player to ending screen 
-                header('Location: conclusion.php');
-                exit;
-            }
-
-        }
     }
 
+    $class = (string) ($_POST['class'] ?? '');
+    if (rpgSelectHeroClass($class, $classTemplates)) {
+        // Class assignment applied by game engine.
+    } elseif (isset($_POST['choice_label'])) {
+        $choiceLabel = (string) $_POST['choice_label'];
+        if (
+            rpgApplyStoryChoice($currentNodeId, $choiceLabel, $storyNodes)
+            && rpgFinalizeEndingIfReached($storyNodes, $endingNodes)
+        ) {
+            header('Location: conclusion.php');
+            exit;
+        }
+    }
 }
+
 $runHistory = $_SESSION['scores'] ?? [];
 
 if (!is_array($runHistory)) {
@@ -309,6 +234,7 @@ $currentNode = $storyNodes[$currentNodeId] ?? $storyNodes['awakening'];
 
     <?php endif ?>
 </main>
+
 
 
 
