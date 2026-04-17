@@ -25,16 +25,17 @@ RPGExplorer/
 ├── index.php                 # Landing page
 ├── login.php                 # Login form + validation + session start
 ├── register.php              # Registration form + validation + session start
-├── game.php                  # Main story engine, class select, branching choices
+├── game.php                  # Main gameplay page (class select + story progression UI)
+├── game-engine.php           # Story/gameplay logic utilities
+├── story-nodes.php           # Branching story node definitions
 ├── conclusion.php            # Ending screen + session run history
+├── scores.php                # Score/leaderboard data helpers
 ├── logout.php                # Session teardown and redirect
-├── leaderboard.php           # Placeholder leaderboard page
 ├── common.php                # Shared helpers (layout + requireLogin)
 ├── styles.css                # Shared styles
 ├── assets/                   # Story art, avatars, banners, ending gifs
-├── favicon_io/               # Favicons and manifest
-├── reference/                # Class/reference exercises (sessions, assignment samples)
-└── TODO.md                   # Development checklist
+├── favicon_io/               # Favicons and web app manifest
+└── README.md                 # Project documentation
 ```
 
 ## Getting Started

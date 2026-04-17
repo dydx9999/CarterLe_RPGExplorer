@@ -8,6 +8,7 @@ $password = '';
 $validUsername = false;
 $validPassword = false;
 
+// Regex validation patterns
 $usernamePattern = '/^[A-Za-z0-9_]{3,20}$/';
 $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,64}$/';
 
