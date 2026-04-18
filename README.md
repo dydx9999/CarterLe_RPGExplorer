@@ -64,7 +64,7 @@ http://localhost:8000/index.php
 1. Project can also be accessed through the live CODD server URL:
 
    ```
-   codd.cs.gsu.edu/~cle46/web/pw/pw2/index.php
+   codd.cs.gsu.edu/~cle46/web/CarterLe_RPGExplorer/index.php
    ```
 
 ## Gameplay Flow
