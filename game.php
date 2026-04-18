@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/common.php';
-require_once __DIR__ . '/story-nodes.php';
-require_once __DIR__ . '/game-engine.php';
+require_once __DIR__ . '/game/story-nodes.php';
+require_once __DIR__ . '/game/game-engine.php';
 
 requireLogin();
 

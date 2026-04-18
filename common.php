@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/scores.php';
+require_once __DIR__ . '/game/scores.php';
 
 function requireLogin(): void
 {
